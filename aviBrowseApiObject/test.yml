@@ -1,0 +1,78 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars_files:
+     - creds.json
+
+  roles:
+    - role: "avinetworks.avisdk"
+
+  tasks:
+
+    - name: Gather remote cluster uuid
+      avi_api_session:
+        avi_credentials: "{{ avi_credentials }}"
+        api_version: "{{ avi_credentials.api_version }}"
+        http_method: post
+        timeout: 300
+        path: gslbsiteops/verify
+        data:
+          username: admin
+          password: Avi_2020
+          port: 443
+          ip_addresses:
+            - addr: "{{ lookup('dig', 'controller.aws.avidemo.fr' ) }}"
+              type: "V4"
+        params:
+          page_size: -1
+      register: gslbsiteopsOutput
+      tags:
+        - gslb
+
+
+    - name: Debug
+      debug:
+        msg: "{{ gslbsiteopsOutput.obj.rx_uuid }}"
+      tags:
+        - gslb
+
+
+    - name: Debug
+      debug:
+        msg: "{{ lookup('dig', 'controller.aws.avidemo.fr' ) }}"
+      tags:
+        - gslb
+
+  #   - name: Set new GSLB site
+  #     set_fact:
+  #       secondarySite:
+  #         - prefix:
+  #             mask: "{{ nsxtSegmentMgt.cidr.split('/')[1] }}"
+  #             ip_addr:
+  #               type: "{{ avi_cloud.networkType }}"
+  #               addr: "{{ nsxtSegmentMgt.cidr.split('/')[0] }}"
+  #           static_ranges:
+  #             - begin:
+  #                 type: "{{ avi_cloud.networkType }}"
+  #                 addr: "{{ nsxtSegmentMgt.cidr.split('/')[0].split('.')[0] }}.{{ nsxtSegmentMgt.cidr.split('/')[0].split('.')[1] }}.{{ nsxtSegmentMgt.cidr.split('/')[0].split('.')[2] }}.{{ avi_cloud.networkRangeBegin }}"
+  #               end:
+  #                 type: "{{ avi_cloud.networkType }}"
+  #                 addr: "{{ nsxtSegmentMgt.cidr.split('/')[0].split('.')[0] }}.{{ nsxtSegmentMgt.cidr.split('/')[0].split('.')[1] }}.{{ nsxtSegmentMgt.cidr.split('/')[0].split('.')[2] }}.{{ avi_cloud.networkRangeEnd }}"
+  #
+  #
+  #
+  # sites:
+  #   - username:  ${var.avi_user}
+  #     password: ${var.avi_password}
+  #     cluster_uuid: "{{ outputCluster.obj.uuid }}"
+  #     member_type: ${var.gslb["primaryType"]}
+  #     name: ${var.gslb["primaryName"]}
+  #     ip_addresses:
+  #       - type: "V4"
+  #         addr: "{{ avi_credentials.controller }}"
+  #     dns_vses:
+  #     - domain_names:
+  #       - ${var.gslb["domain"]}
+  #       dns_vs_uuid: "{{ outputVsDns.results.1.obj.uuid }}"

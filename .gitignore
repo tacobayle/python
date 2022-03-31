@@ -4,9 +4,3 @@ terraform.tfstate.backup
 terraform.tfstate.lock.info
 .terraform.lock.hcl
 .idea/
-aviBrowseApiObject/
-flask/
-flaskRestAPI/
-seCreation/
-sshKey/
-vmc/

@@ -1,0 +1,32 @@
+avi_gslb:
+  dns_configs:
+    - domain_name: gslb.avidemo.fr
+  sites:
+    - username:  admin
+      password: Avi_2020
+      cluster_uuid: "{{ outputCluster.obj.uuid | default('Null') }}"
+      member_type: GSLB_ACTIVE_MEMBER
+      name: local
+      ip_addresses:
+        - type: "V4"
+          addr: 192.168.142.135
+      dns_vses:
+      - domain_names:
+        - gslb.avidemo.fr
+        dns_vs_uuid: virtualservice-9833970d-4c1c-4f8b-b037-056e12281307
+    - cluster_uuid: "{{ gslbsiteopsOutput.obj.rx_uuid | default('Null') }}"
+      name: aws
+      ip_addresses:
+      - addr: "{{ lookup('dig', 'controller.aws.avidemo.fr' ) | default('Null') }}"
+        type: "V4"
+      username: admin
+      password: ****
+      member_type: GSLB_PASSIVE_MEMBER
+
+avi_gslbgeodbprofile:
+  - name: geoProfile
+    entries:
+      - priority: 10
+        file:
+          format: GSLB_GEODB_FILE_FORMAT_AVI
+          filename: AviGeoDb.txt.gz
