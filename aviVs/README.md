@@ -45,6 +45,9 @@ The below variable(s) called need(s) to be adjusted:
 ```   
    The other varaiables don't need to be adjusted.
 ```
+fileCredential = sys.argv[1]
+tenant = "admin"
+objectPrefix = 'python-'
 # Health Monitor
 hmHttpName = 'hm1'
 hmHttpType = 'HEALTH_MONITOR_HTTP'
@@ -54,14 +57,11 @@ hmHttpSi = 1
 hmHttpR = 'HEAD / HTTP/1.0'
 hmHttpRc = ["HTTP_2XX", "HTTP_3XX", "HTTP_5XX"]
 hmHttpSc = 2
-#
 # Pool
 poolName = 'pool1'
 poolA = 'LB_ALGORITHM_ROUND_ROBIN'
 poolHm = hmHttpName
-poolServerList = ['172.16.3.252', '172.16.3.253']
 poolPort = 80
-#
 # Vs
 vsName = 'app1'
 vsPorts = [80, 443]
