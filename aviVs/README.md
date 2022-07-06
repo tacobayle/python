@@ -17,18 +17,17 @@ pip install avisdk
 ### Avi version
 
 ```
-Avi 18.2.9
+Avi 21.1.4
 ```
 
 ### Avi Environment
 
-- LSC Cloud
-- VMware Cloud (Vsphere 6.7.0.42000) without NSX
+- vCenter Cloud
 
 
 ## Input/Parameters:
 
-1. Make sure you have a json file with the Avi credentials like the following:
+- Make sure you have a json file with the Avi credentials like the following:
 
 ```
 avi@ansible:~/python/aviVs$ more creds.json
@@ -36,11 +35,15 @@ avi@ansible:~/python/aviVs$ more creds.json
 
 ```
 
-2. All the other paramaters/variables are stored in the python script aviVs.py.
+- All the other paramaters/variables are stored in the python script aviVs.py.
 The below variable(s) called need(s) to be adjusted:
-- poolServerList
-The other varaiables don't need to be adjusted.
-
+```
+   pool_server_list = ['100.64.130.203', '100.64.130.204']
+   cloud_name = 'dc1_vCenter'
+   domain_name = 'vmw.avidemo.fr'
+   network_name = "vxw-dvs-34-virtualwire-118-sid-1080117-sof2-01-vc08-avi-dev114"
+```   
+   The other varaiables don't need to be adjusted.
 ```
 # Health Monitor
 hmHttpName = 'hm1'
@@ -67,14 +70,17 @@ vsSslCertificate = 'System-Default-Cert'
 ```
 
 ## Use the the python script to:
-1. Create a Health Monitor
-2. Create a Pool (based on the Health Monitor previously created)
-3. Create a VS based on Avi IPAM and DNS and based on the pool previously created
+- Create a Health Monitor 
+- Create a Pool (based on the Health Monitor previously created)
+- Retrieve the network details (first subnet)
+- Create a vsvip based on IPAM and DNS 
+- Create a VS based on pool and vsvip previously configured
 
 ## Run the terraform:
 - clone git
 ```
-git clone https://github.com/tacobayle/pythonAviVs
+git clone https://github.com/tacobayle/python
+cd python/aviVs
 ```
 
 - deploy:
@@ -82,7 +88,7 @@ git clone https://github.com/tacobayle/pythonAviVs
 python3 aviVs.py creds.json
 ```
 
-## Improvment:
+## Improvements:
 - add SE service group
 - add log and analytics capabilities
 ```
@@ -117,4 +123,3 @@ resource "avi_virtualservice" "https_vs" {
   }
 }
 ```
-- test vsvip agianst 20.1.1
