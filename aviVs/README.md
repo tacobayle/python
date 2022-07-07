@@ -31,17 +31,17 @@ Avi 21.1.4
 
 ```
 avi@ansible:~/python/aviVs$ more creds.json
-{"avi_credentials": {"username": "admin", "controller": "192.168.142.135", "password": "*****", "api_version": "18.2.9"}}
+{"avi_credentials": {"username": "admin", "controller": "192.168.142.135", "password": "*****", "api_version": "21.1.4"}}
 
 ```
 
 - All the other paramaters/variables are stored in the python script aviVs.py.
 The below variable(s) called need(s) to be adjusted:
 ```
-   pool_server_list = ['100.64.130.203', '100.64.130.204']
-   cloud_name = 'dc1_vCenter'
-   domain_name = 'vmw.avidemo.fr'
-   network_name = "vxw-dvs-34-virtualwire-118-sid-1080117-sof2-01-vc08-avi-dev114"
+pool_server_list = ['100.64.130.203', '100.64.130.204']
+cloud_name = 'dc1_vCenter'
+domain_name = 'vmw.avidemo.fr'
+network_name = "vxw-dvs-34-virtualwire-118-sid-1080117-sof2-01-vc08-avi-dev114"
 ```   
    The other varaiables don't need to be adjusted.
 ```
@@ -69,7 +69,7 @@ vsSslProfile = 'System-Standard'
 vsSslCertificate = 'System-Default-Cert'
 ```
 
-## Use the the python script to:
+## Use the python script to:
 - Create a Health Monitor 
 - Create a Pool (based on the Health Monitor previously created)
 - Retrieve the network details (first subnet)
